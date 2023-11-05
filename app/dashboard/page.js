@@ -13,17 +13,18 @@ export default function Dashboard() {
 
   const logOut=()=>{
     router.push('/')
+    
   }
 
   return (
     <Box>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="fixed" sx={{backgroundColor:"#fff"}}>
+        <AppBar position="fixed" color="error">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1  , color:"#000"}}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               QR Menü Paneli
             </Typography>
-            <Button onClick={logOut} variant='outlined' color="error">Çıkış Yap</Button>
+            <Button onClick={logOut} color='inherit'>Çıkış Yap</Button>
           </Toolbar>
         </AppBar>
       </Box>
