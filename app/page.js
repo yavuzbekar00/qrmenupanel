@@ -2,34 +2,34 @@
 import { Box, Button, Card, Radio, TextField, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+// icon
+import QrCodeIcon from '@mui/icons-material/QrCode';
+// data
+import userData from "../Database/userData.json"
 
 export default function Home() {
-  const users = [
-    {
-      "id": 1,
-      "userName": "admin",
-      "password": "admin123"
-    }
-  ]
-
   const router = useRouter()
 
   const [username, setUserName] = useState("")
   const [password, setPassword] = useState("")
-  const [error , setError] = useState("")
+  const [error, setError] = useState("")
 
-  const handleButton= ()=>{
-    if(username === users[0].userName && password === users[0].password){
-      router.push("dashboard")
+  const handleButton = () => {
+    if (username === userData.users[0].userName && password === userData.users[0].password) {
       setPassword("")
       setUserName("")
-    }else{
+      if (userData.users[0].firstName === "") {
+        router.push("/detail")
+      } else {
+        router.push("/dashboard")
+      }
+    } else {
       setError("Lütfen girdiğiniz bilgileri kontrol ediniz!")
       setPassword("")
       setUserName("")
-      setTimeout(()=>{
+      setTimeout(() => {
         setError("")
-      } , 5000)
+      }, 5000)
     }
   }
 
@@ -43,7 +43,15 @@ export default function Home() {
       flex: 1,
       gap: 25
     }}>
-      <Box>
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}>
+        <QrCodeIcon sx={{
+          width: "150px",
+          height: "150px"
+        }}></QrCodeIcon>
         <Typography fontSize={100}>QR MENU</Typography>
       </Box>
       <Card sx={{
@@ -105,7 +113,7 @@ export default function Home() {
             >Şifremi Unuttum</Typography>
           </Box>
         </Box>
-        <Button variant="contained" component="span" onClick={handleButton} >Giriş Yap</Button>
+        <Button variant="contained" component="span" color="error" onClick={handleButton} >Giriş Yap</Button>
       </Card>
     </Box>
   )
