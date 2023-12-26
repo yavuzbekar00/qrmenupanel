@@ -1,9 +1,69 @@
-import { AppBar, Box, Stack, Typography } from '@mui/material'
-import React from 'react'
+"use client"
+import { AppBar, Box, Button, Card, Container, Stack, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import Sidebar from '../../Components/Sidebar'
 import Navbar from '@/Components/Navbar'
+import AddIcon from '@mui/icons-material/Add';
+import AddProductModal from '@/Components/AddProductModal'
+import UpdateProductModal from '@/Components/UpdateProductModal'
+import DefaultImage from '@mui/icons-material/HideImage';
 
-function page() {
+function Page() {
+  const [isUpdated, setIsUpdated] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null); // New state
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const [open, setOpen] = React.useState(false);
+  const [products, setProducts] = useState([])
+  const [newProduct, setNewProduct] = useState(
+    {
+      head: "",
+      content: "",
+      price: ""
+    }
+  );
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleAddProduct = () => {
+    const uniqueId = new Date().getTime();
+    const productWithId = {
+      ...newProduct,
+      id: uniqueId,
+      image: selectedImage,
+    };
+    console.log(products)
+    if (newProduct.head !== "" && newProduct.content !== "" && newProduct.price !== "") {
+      setProducts((prevProducts) => [...prevProducts, productWithId]);
+      setOpen(false);
+      setNewProduct({
+        head: "",
+        content: "",
+        price: "",
+      });
+      setSelectedImage(null);
+    } else {
+      if (newProduct.head === "") alert("Lütfen Ürün Başlığını Girin!")
+      else if (newProduct.content === "") alert("Lütfen Ürün İçeriğini Girin!")
+      else if (newProduct.price === "") alert("Lütfen Ürün Fiyatını Girin!")
+    }
+
+  };
+
+
+  const handleDeleteProduct = (productId) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== productId)
+    );
+  };
+
+
+  const handleClickUpdate = (product) => {
+    setSelectedProduct(product);
+    setIsUpdated(true);
+  };
   return (
     <Box>
       <Box>
@@ -17,14 +77,154 @@ function page() {
         <Box zIndex={2}>
           <Sidebar />
         </Box>
-        <Box zIndex={1} ml={35} >
-          <Box p={10} mt={6}>
-            {/* content */}
+        <Box zIndex={1} ml={35} width={1} >
+          <Box p={6} mt={6} sx={{ width: 1 }}>
+            <Container>
+              <Stack>
+                <Box>
+                  <Typography variant='h5'>Yeni Ürün Ekleyin</Typography>
+                  <Card sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    p: "15px",
+                    mt: 2
+                  }}>
+                    <Button onClick={handleOpen}><AddIcon />Yeni Ürün Ekle</Button>
+                  </Card>
+                </Box>
+                <AddProductModal selectedImage={selectedImage} setSelectedImage={setSelectedImage} handleAddProduct={handleAddProduct} newProduct={newProduct} setNewProduct={setNewProduct} open={open} setOpen={setOpen}></AddProductModal>
+              </Stack>
+            </Container>
           </Box>
+          <Box pl={10} pr={10} sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}>
+            {products.length !== 0 ? (
+              products.map((product) => (
+                <Card
+                  key={product.id}
+                  sx={{
+                    width: "calc(25% - 20px)",
+                    height: "300px",
+                    margin: "10px",
+                    padding: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    mb: 2,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center"
+                    }}
+                  >
+                    {product.image ? (
+                      <Box
+                        sx={{
+                          width: "150px",
+                          height: "150px",
+                          borderRadius: "3px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          overflow: "hidden",
+                          marginRight: 2
+                        }}
+                      >
+                        <img
+                          src={product.image}
+                          alt={`Product ${product.id}`}
+                          style={{ width: "100%" }}
+                        />
+                      </Box>
+                    ) : <DefaultImage sx={{
+                      width: "150px",
+                      height: "150px"
+                    }}>
+                    </DefaultImage>}
+                    <Box
+                      sx={{
+                        borderRadius: "3px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 2,
+                        overflow: "scroll"
+                      }}
+                    >
+                      <Typography>{product.head}</Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        borderRadius: "3px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 2,
+                        overflow: "scroll"
+                      }}
+                    >
+                      <Typography>{product.content}</Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        borderRadius: "3px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "scroll"
+                      }}
+                    >
+                      <Typography>{product.price} ₺</Typography>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 2
+                    }}
+                  >
+                    <Button
+                      onClick={() => handleClickUpdate(product)}
+                      variant="outlined"
+                      color="primary"
+                    >
+                      Düzenle
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => handleDeleteProduct(product.id)}
+                    >
+                      Sil
+                    </Button>
+                  </Box>
+                </Card>
+              ))
+            ) : (
+              <Box>
+                <Typography>Henüz bir ürün eklenmemiş!</Typography>
+              </Box>
+            )}
+          </Box>
+
+
+          <UpdateProductModal
+            isUpdated={isUpdated}
+            setIsUpdated={setIsUpdated}
+            selectedProduct={selectedProduct}
+            setProducts={setProducts}
+          />
         </Box>
       </Box>
     </Box >
   )
 }
 
-export default page
+export default Page

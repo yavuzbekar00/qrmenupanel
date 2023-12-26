@@ -13,6 +13,7 @@ export default function Dashboard() {
 
   const inputData = JSON.parse(localStorage.getItem('inputData'));
 
+  console.log(inputData)
   return (
     <Box>
       <Box>

@@ -7,7 +7,9 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 function page() {
-  const { setValue, inputData } = useGetData()
+  const inputData = JSON.parse(localStorage.getItem('inputData'));
+
+  console.log(inputData)
   return (
     <Box>
       <Box>
@@ -16,12 +18,13 @@ function page() {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row"
+          flexDirection: "row",
         }}>
         <Box zIndex={2}>
           <Sidebar />
         </Box>
-        <Box zIndex={1} ml={35} >
+        <Box zIndex={1} ml={35}
+          sx={{ width: 1 }}>
           <Box p={10} mt={6}>
             <Box sx={{
               width: "100%",
@@ -128,7 +131,18 @@ function page() {
                       variant='standard'
                     />
                   </Box>
-
+                  <Box sx={{
+                    display: "flex",
+                    justifyContent: "flex-end"
+                  }}>
+                    <Button
+                      variant='contained'
+                      color='error'
+                      sx={{
+                        mt: 3
+                      }}
+                    >Profilini Tamamla</Button>
+                  </Box>
                 </Card>
               </Container>
             </Box>
