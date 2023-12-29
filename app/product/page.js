@@ -34,8 +34,8 @@ function Page() {
       id: uniqueId,
       image: selectedImage,
     };
-    console.log(products)
-    if (newProduct.head !== "" && newProduct.content !== "" && newProduct.price !== "") {
+    console.log(newProduct.category)
+    if (newProduct.head !== "" && newProduct.content !== "" && newProduct.price !== "" && newProduct.category !== undefined) {
       setProducts((prevProducts) => [...prevProducts, productWithId]);
       setOpen(false);
       setNewProduct({
@@ -48,6 +48,7 @@ function Page() {
       if (newProduct.head === "") alert("Lütfen Ürün Başlığını Girin!")
       else if (newProduct.content === "") alert("Lütfen Ürün İçeriğini Girin!")
       else if (newProduct.price === "") alert("Lütfen Ürün Fiyatını Girin!")
+      else if (newProduct.category === undefined) alert("Lütfen Bir Kategori Seçin!")
     }
 
   };
@@ -107,21 +108,20 @@ function Page() {
                   key={product.id}
                   sx={{
                     width: "calc(25% - 20px)",
-                    height: "300px",
+                    height: "350px",
                     margin: "10px",
-                    padding: 1,
+                    padding: 2,
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "column",
                     justifyContent: "space-between",
-                    mb: 2,
                   }}
                 >
                   <Box
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "center"
+                      alignItems: "center",
                     }}
                   >
                     {product.image ? (
@@ -134,7 +134,6 @@ function Page() {
                           alignItems: "center",
                           justifyContent: "center",
                           overflow: "hidden",
-                          marginRight: 2
                         }}
                       >
                         <img
@@ -155,7 +154,6 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        overflow: "scroll",
                       }}
                     >
                       <Typography fontSize="18px" fontWeight="600">{product.head}</Typography>
@@ -166,7 +164,11 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        overflow: "scroll",
+                        width: "200px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        textAlign: "start"
                       }}
                     >
                       <Typography>{product.content}</Typography>
@@ -177,7 +179,6 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        overflow: "scroll",
                       }}
                     >
                       <Typography>{product.category}</Typography>
@@ -188,7 +189,6 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        overflow: "scroll",
                       }}
                     >
                       <Typography color="error">{product.price} ₺</Typography>
