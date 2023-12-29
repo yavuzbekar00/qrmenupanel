@@ -145,7 +145,8 @@ function Page() {
                       </Box>
                     ) : <DefaultImage sx={{
                       width: "150px",
-                      height: "150px"
+                      height: "150px",
+                      opacity: ".6"
                     }}>
                     </DefaultImage>}
                     <Box
@@ -154,11 +155,10 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        mr: 2,
-                        overflow: "scroll"
+                        overflow: "scroll",
                       }}
                     >
-                      <Typography>{product.head}</Typography>
+                      <Typography fontSize="18px" fontWeight="600">{product.head}</Typography>
                     </Box>
                     <Box
                       sx={{
@@ -166,8 +166,7 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        mr: 2,
-                        overflow: "scroll"
+                        overflow: "scroll",
                       }}
                     >
                       <Typography>{product.content}</Typography>
@@ -178,10 +177,21 @@ function Page() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        overflow: "scroll"
+                        overflow: "scroll",
                       }}
                     >
-                      <Typography>{product.price} ₺</Typography>
+                      <Typography>{product.category}</Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        borderRadius: "3px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "scroll",
+                      }}
+                    >
+                      <Typography color="error">{product.price} ₺</Typography>
                     </Box>
                   </Box>
                   <Box
@@ -213,8 +223,6 @@ function Page() {
               </Box>
             )}
           </Box>
-
-
           <UpdateProductModal
             isUpdated={isUpdated}
             setIsUpdated={setIsUpdated}
